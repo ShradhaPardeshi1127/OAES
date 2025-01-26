@@ -1,0 +1,98 @@
+.home-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+  font-family: "Arial", sans-serif;
+  padding: 1rem;
+}
+
+.home-page-content {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.home-page-image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+}
+
+.home-page-text {
+  max-width: 600px;
+  text-align: center;
+}
+
+.home-page-text h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.home-page-text p {
+  font-size: 1.2rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.home-page-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.login-btn,
+.guest-btn {
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.login-btn {
+  background-color: #6c63ff;
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #5a54d3;
+  transform: scale(1.05);
+}
+
+.guest-btn {
+  background-color: white;
+  color: #6c63ff;
+  border: 2px solid #6c63ff;
+}
+
+.guest-btn:hover {
+  background-color: #eae8ff;
+  transform: scale(1.05);
+}
+
+.signup-link {
+  margin-top: 1rem;
+}
+
+.signup-link a {
+  color: #6c63ff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
