@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
-const User = require("./models/User.js"); // Import the User model
+const User = require("./models/User.js");
 
 const app = express();
 const PORT = process.env.PORT || 7000;
@@ -11,14 +11,47 @@ const PORT = process.env.PORT || 7000;
 app.use(express.json());
 app.use(cors());
 
-// MongoDB connection
-mongoose
-  .connect("mongodb://127.0.0.1:27017/AdminLogin", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+// MongoDB connection function
+const connectToDB = async (dbName) => {
+  try {
+    await mongoose.connect(`mongodb://127.0.0.1:27017/${dbName}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`Connected to MongoDB: ${dbName}`);
+  } catch (err) {
+    console.error(`MongoDB connection error for ${dbName}:`, err);
+    throw err;
+  }
+};
+
+// Admin login route
+app.post("/login-options/adminlogin", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
+  }
+
+  try {
+    await connectToDB("AdminLogin/users");
+
+    const admin = await User.findOne({ email, role: "admin" });
+    if (!admin) {
+      return res.status(404).json({ error: "Admin not found" });
+    }
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    res.status(200).json({ message: "Admin login successful" });
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Evaluator login route
 app.post("/login-options/evaluatorlogin", async (req, res) => {
@@ -29,7 +62,9 @@ app.post("/login-options/evaluatorlogin", async (req, res) => {
   }
 
   try {
-    const evaluator = await User.findOne({ email });
+    await connectToDB("EvaluatorLogin");
+
+    const evaluator = await User.findOne({ email, role: "evaluator" });
     if (!evaluator) {
       return res.status(404).json({ error: "Evaluator not found" });
     }
@@ -48,14 +83,16 @@ app.post("/login-options/evaluatorlogin", async (req, res) => {
 
 // Student login route
 app.post("/login-options/studentlogin", async (req, res) => {
-  const { rollNumber, email, name, password } = req.body;
+  const { email, password, rollNumber, name } = req.body;
 
-  if (!rollNumber || !email || !name || !password) {
+  if (!email || !password || !rollNumber || !name) {
     return res.status(400).json({ error: "All fields are required" });
   }
 
   try {
-    const student = await User.findOne({ email });
+    await connectToDB("StudentLogin");
+
+    const student = await User.findOne({ email, role: "student" });
     if (!student) {
       return res.status(404).json({ error: "Student not found" });
     }
@@ -66,33 +103,6 @@ app.post("/login-options/studentlogin", async (req, res) => {
     }
 
     res.status(200).json({ message: "Student login successful" });
-  } catch (err) {
-    console.error("Server error:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// Password reset route
-app.post("/reset-password", async (req, res) => {
-  const { email, newPassword } = req.body;
-
-  if (!email || !newPassword) {
-    return res
-      .status(400)
-      .json({ error: "Email and new password are required" });
-  }
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-    await user.save();
-
-    res.status(200).json({ message: "Password reset successful" });
   } catch (err) {
     console.error("Server error:", err);
     res.status(500).json({ error: "Internal server error" });

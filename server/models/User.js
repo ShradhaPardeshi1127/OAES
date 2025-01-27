@@ -15,20 +15,26 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
   },
+  role: {
+    type: String,
+    required: true,
+    enum: ["admin", "student", "evaluator"],
+  },
   accessCode: {
-    type: String, // Only for evaluators
-    default: null,
+    type: String,
+    default: null, // Only for evaluators
   },
   rollNumber: {
-    type: String, // Only for students
-    default: null,
+    type: String,
+    default: null, // Only for students
   },
   name: {
-    type: String, // Only for students
-    default: null,
+    type: String,
+    default: null, // Only for students
   },
 });
 
+// Password hashing middleware before saving the user
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
@@ -41,4 +47,5 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+// Create and export the User model
 module.exports = mongoose.model("User", userSchema);
