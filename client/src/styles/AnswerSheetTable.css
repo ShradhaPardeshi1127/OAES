@@ -1,0 +1,104 @@
+/* Container */ 
+.container {
+  padding: 20px;
+  background: #f9f9f9;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #a7a4f0; /* Soft purple */
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  background: #ffffff;
+  color: #a7a4f0; /* Soft purple for the back button */
+  border: none;
+  padding: 8px 18px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #f0f0f0;
+}
+
+/* Table */
+.answer-sheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.answer-sheet-table th,
+.answer-sheet-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.answer-sheet-table th {
+  background: #f4af41; /* Orange color for header */
+  color: white;
+}
+
+/* Assignment ID */
+.assignment-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.assignment-link:hover {
+  text-decoration: underline;
+}
+
+/* Status */
+.status {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* In Progress as Button */
+.in-progress {
+  background: #ffeb3b; /* Yellow background */
+  color: #333;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.in-progress:hover {
+  background: #fdd835; /* Darker yellow on hover */
+}
+
+/* Check Button */
+.check-btn {
+  background: #f4af41; /* Orange background for check button */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.check-btn:hover {
+  background: #e49131; /* Darker orange on hover */
+}

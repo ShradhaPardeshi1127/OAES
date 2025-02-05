@@ -16,6 +16,7 @@
   justify-content: center;
   max-width: 1200px;
   width: 100%;
+  margin-top: 50px;
 }
 
 .home-page-image img {
@@ -28,6 +29,7 @@
 .home-page-text {
   max-width: 600px;
   text-align: center;
+  gap:3rem;
 }
 
 .home-page-text h1 {

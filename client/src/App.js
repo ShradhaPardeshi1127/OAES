@@ -9,6 +9,11 @@ import AdminLogin from "./components/AdminLogin";
 import ResetPassword from "./components/ResetPassword";
 import EvaluatorLogin from "./components/EvaluatorLogin";
 import StudentLogin from "./components/StudentLogin";
+import AdminDashboard from "./components/AdminDashboard";
+import OnScreenEvaluation from "./components/OnScreenEvaluation";
+import Evaluation from "./components/Evaluation";
+import AnswerSheetTable from "./components/AnswerSheetTable";
+import PdfViewer from "./components/PdfViewer";
 
 const App = () => {
   return (
@@ -22,7 +27,11 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/evaluatorlogin" element={<EvaluatorLogin />} />
         <Route path="/studentlogin" element={<StudentLogin />} />
-        {/* Add more routes as needed */}
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/on-screen-evaluation" element={<OnScreenEvaluation />} />
+        <Route path="/evaluation/:id" element={<Evaluation />} />
+        <Route path="/answer-sheet-table" element={<AnswerSheetTable />} />
+        <Route path="/pdf-viewer" element={<PdfViewer />} />
       </Routes>
     </Router>
   );

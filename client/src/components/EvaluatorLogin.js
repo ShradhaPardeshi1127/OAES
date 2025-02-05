@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/EvaluatorLogin.css";
 
 const EvaluatorLogin = () => {
+  const [name, setName] = useState(""); // New state for name
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [accessCode, setAccessCode] = useState("");
@@ -12,9 +13,10 @@ const EvaluatorLogin = () => {
     e.preventDefault();
     setError("");
 
-    console.log("Email:", email); // Debug log
-    console.log("Password:", password); // Debug log
-    console.log("Access Code:", accessCode); // Debug log
+    console.log("Name:", name); // Debug log for name
+    console.log("Email:", email);
+    console.log("Password:", password);
+    console.log("Access Code:", accessCode);
 
     try {
       const response = await fetch(
@@ -24,20 +26,20 @@ const EvaluatorLogin = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password, accessCode }),
+          body: JSON.stringify({ name, email, password, accessCode }),
         }
       );
 
       if (!response.ok) {
         const data = await response.json();
-        console.error("Login error:", data.error); // Debug log
+        console.error("Login error:", data.error);
         setError(data.error || "Something went wrong. Please try again.");
         return;
       }
 
       const data = await response.json();
       alert(data.message);
-      window.location.href = "/evaluator-dashboard";
+      window.location.href = "/on-screen-evaluation";
     } catch (error) {
       console.error("Error:", error);
       setError("Something went wrong. Please try again.");
@@ -53,8 +55,21 @@ const EvaluatorLogin = () => {
       <h1>Evaluator Login</h1>
       <p>Welcome back! Please enter your details to proceed</p>
       <form className="login-form" onSubmit={handleLogin}>
+        {/* Name Field */}
         <div className="input-group">
-          <label htmlFor="email">Enter your email *</label>
+          <label htmlFor="name">Name *</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+        {/* Email Field */}
+        <div className="input-group">
+          <label htmlFor="email">Email *</label>
           <input
             type="email"
             id="email"
@@ -65,6 +80,7 @@ const EvaluatorLogin = () => {
             autoComplete="email"
           />
         </div>
+        {/* Password Field */}
         <div className="input-group">
           <label htmlFor="password">Password *</label>
           <div style={{ position: "relative" }}>
@@ -96,6 +112,7 @@ const EvaluatorLogin = () => {
             </button>
           </div>
         </div>
+        {/* Access Code Field */}
         <div className="input-group">
           <label htmlFor="accessCode">Access Code *</label>
           <input
@@ -107,7 +124,9 @@ const EvaluatorLogin = () => {
             required
           />
         </div>
+        {/* Error Message */}
         {error && <p className="error">{error}</p>}
+        {/* Remember Me and Forgot Password */}
         <div className="options">
           <label>
             <input
@@ -126,6 +145,7 @@ const EvaluatorLogin = () => {
             Forgot password?
           </a>
         </div>
+        {/* Submit Button */}
         <button type="submit" className="login-btn">
           LOGIN
         </button>

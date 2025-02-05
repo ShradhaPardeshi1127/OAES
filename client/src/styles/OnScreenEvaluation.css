@@ -1,0 +1,89 @@
+.evaluation-container {
+  display: flex;
+  flex-direction: column; /* Keep the heading and cards in vertical order */
+  justify-content: center; /* Center the div vertically */
+  align-items: center; /* Center the div horizontally */
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh; /* Full viewport height */
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 30px; /* Space below heading */
+  font-size: 2.5rem;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-content: center; /* Align cards horizontally in the grid */
+  align-items: center; /* Align cards vertically in the grid */
+  width: 80%; /* Set a width for the container */
+  max-width: 1200px; /* Max width for responsiveness */
+  height: 50%; /* Increase height for better visibility */
+  max-height: 500px; /* Limit max height */
+  padding: 20px;
+  background-color: #a7a4f0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for emphasis */
+  box-sizing: border-box;
+}
+
+.paper-card {
+  background-color: #f4af41;
+  color: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 300px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+}
+
+.paper-card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+
+.paper-card p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.status {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.check-paper-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 15px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.check-paper-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
+
+.paper-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}

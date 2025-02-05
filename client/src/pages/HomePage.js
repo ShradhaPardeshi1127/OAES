@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/HomePage.css";
-import osmillustration from "../assets/IMG_1.jpg";
+import osmillustration from "../assets/hs_page2.png";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -10,10 +10,7 @@ const HomePage = () => {
     <div className="home-page">
       <div className="home-page-content">
         <div className="home-page-image">
-          <img
-            src={osmillustration} // Replace with actual image URL or local asset
-            alt="OSM Illustration"
-          />
+          <img src={osmillustration} alt="OSM Illustration" />
         </div>
         <div className="home-page-text">
           <h1>Welcome to Evaluate Answer Sheet Using OSM</h1>
@@ -48,9 +45,10 @@ const HomePage = () => {
                 textDecoration: "underline",
                 cursor: "pointer",
                 padding: 0,
+                
               }}
             >
-             Sign up
+              Sign up
             </button>
           </p>
         </div>

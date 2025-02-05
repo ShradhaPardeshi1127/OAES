@@ -9,11 +9,11 @@ const AdminLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); 
-  
+    setError("");
+
     console.log("Email:", email); // Debug log
     console.log("Password:", password); // Debug log
-  
+
     try {
       const response = await fetch(
         "http://localhost:7000/login-options/adminlogin",
@@ -25,22 +25,22 @@ const AdminLogin = () => {
           body: JSON.stringify({ email, password }),
         }
       );
-  
+
       if (!response.ok) {
         const data = await response.json();
         console.error("Login error:", data.error); // Debug log
         setError(data.error || "Something went wrong. Please try again.");
         return;
       }
-  
+
       const data = await response.json();
       alert(data.message);
-      window.location.href = "/dashboard";
+      window.location.href = "/admin-dashboard";
     } catch (error) {
       console.error("Error:", error);
       setError("Something went wrong. Please try again.");
     }
-  };  
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -109,7 +109,7 @@ const AdminLogin = () => {
             href="/reset-password"
             className="reset-password-link"
             onClick={() => localStorage.setItem("emailToReset", email)}
-          >
+          > 
             Forgot password?
           </a>
         </div>
