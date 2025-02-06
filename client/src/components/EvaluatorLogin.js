@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/EvaluatorLogin.css";
 
 const EvaluatorLogin = () => {
@@ -9,14 +10,16 @@ const EvaluatorLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    console.log("Name:", name); // Debug log for name
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Access Code:", accessCode);
+    // console.log("Name:", name); // Debug log for name
+    // console.log("Email:", email);
+    // console.log("Password:", password);
+    // console.log("Access Code:", accessCode);
 
     try {
       const response = await fetch(
@@ -32,14 +35,16 @@ const EvaluatorLogin = () => {
 
       if (!response.ok) {
         const data = await response.json();
-        console.error("Login error:", data.error);
+        // console.error("Login error:", data.error);
         setError(data.error || "Something went wrong. Please try again.");
         return;
       }
 
       const data = await response.json();
       alert(data.message);
-      window.location.href = "/on-screen-evaluation";
+      // window.location.href = "/on-screen-evaluation";
+      // Navigate to AfterEvaluatorLogin and pass the name as state
+      navigate("/afterevaluatorlogin", { state: { evaluatorName: name } });
     } catch (error) {
       console.error("Error:", error);
       setError("Something went wrong. Please try again.");

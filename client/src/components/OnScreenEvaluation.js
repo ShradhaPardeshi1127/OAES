@@ -1,63 +1,64 @@
-import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/OnScreenEvaluation.css";
 
-const papers = [
-  {
-    course: "BCA",
-    specialization: "Marketing Analytics",
-    semester: "Semester 4",
-    endDate: "Jan 31, 2020",
-    uploaded: 5,
-    checked: 0,
-    remaining: 5,
-  },
-];
-
 const OnScreenEvaluation = () => {
-  const navigate = useNavigate(); // Initialize navigate hook
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { subject, division, evaluatorName } = location.state || {};
+  const [pdfs, setPdfs] = useState([]);
 
-  const handleCheckPaper = () => {
-    // Redirect to the Answer Sheet Table page
-    navigate("/answer-sheet-table");
-  };
+  useEffect(() => {
+    // Fetch evaluator's assigned PDFs based on the evaluatorName
+    // Example: Assuming you have an API to fetch assigned PDFs for a specific evaluator
+    const fetchAssignedPdfs = async () => {
+      try {
+        const response = await fetch(
+          `/api/evaluators/${evaluatorName}/assignedPdfs`
+        );
+        const data = await response.json();
+        const filteredPdfs = data.filter(
+          (pdf) => pdf.subject === subject && pdf.division === division
+        );
+        setPdfs(filteredPdfs);
+      } catch (error) {
+        console.error("Error fetching PDFs:", error);
+      }
+    };
+
+    fetchAssignedPdfs();
+  }, [evaluatorName, subject, division]);
 
   return (
     <div className="evaluation-container">
       <h1>On-Screen Evaluation</h1>
       <div className="cards-container">
-        {papers.map((paper, index) => (
-          <div className="paper-card" key={index}>
-            <h2>{paper.specialization}</h2>
-            <p>
-              <strong>Course:</strong> {paper.course}
-            </p>
-            <p>
-              <strong>Semester:</strong> {paper.semester}
-            </p>
-            <p>
-              <strong>End Date:</strong> {paper.endDate}
-            </p>
-            <div className="status">
-              <p>
-                <strong>Uploaded:</strong> {paper.uploaded}
-              </p>
-              <p>
-                <strong>Checked:</strong> {paper.checked}
-              </p>
-              <p>
-                <strong>Remaining:</strong> {paper.remaining}
-              </p>
-            </div>
-            <button className="check-paper-btn" onClick={handleCheckPaper}>
-              Check Paper
-            </button>
-          </div>
-        ))}
+        <div className="paper-card">
+          <h2>{subject}</h2>
+          <p>
+            <strong>Division:</strong> {division}
+          </p>
+          <p>
+            <strong>Uploaded:</strong> {pdfs.length}
+          </p>
+          <p>
+            <strong>Checked:</strong> {pdfs.filter((p) => p.checked).length}
+          </p>
+          <p>
+            <strong>Remaining:</strong> {pdfs.filter((p) => !p.checked).length}
+          </p>
+          <button
+            className="check-paper-btn"
+            onClick={() =>
+              navigate("/answer-sheet-table", { state: { subject } })
+            }
+          >
+            Check Paper
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default OnScreenEvaluation;
-
