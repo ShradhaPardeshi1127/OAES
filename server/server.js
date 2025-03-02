@@ -229,7 +229,6 @@ app.post("/login-options/adminlogin", async (req, res) => {
 //   }
 // });
 
-
 app.post("/assign-pdf-to-evaluator", async (req, res) => {
   try {
     const { evaluatorName, pdfs } = req.body; // Expect evaluatorName and a pdfs array
@@ -315,6 +314,31 @@ app.post("/get-pdfs", async (req, res) => {
   } catch (error) {
     console.error("Error fetching PDFs:", error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Example API endpoint using Express.js and Mongoose
+app.get('/evaluators/:evaluatorName/assignedPdfs', async (req, res) => {
+  const { evaluatorName } = req.params;
+  const { subject, division } = req.query;
+
+  try {
+      // Find the evaluator by name
+      const evaluator = await Evaluator.findOne({ name: evaluatorName });
+
+      if (!evaluator) {
+          return res.status(404).json({ message: 'Evaluator not found' });
+      }
+
+      // Filter assigned PDFs based on subject and division
+      const assignedPdfs = evaluator.assignedPdfs.filter(pdf => {
+          return pdf.subject === subject && pdf.division === division;
+      });
+
+      res.json(assignedPdfs);
+  } catch (error) {
+      console.error('Error fetching assigned PDFs:', error);
+      res.status(500).json({ message: 'Failed to fetch assigned PDFs' });
   }
 });
 
