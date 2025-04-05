@@ -1,4 +1,3 @@
-import "./styles/App.css";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
@@ -15,6 +14,7 @@ import EvaluatorLogin from "./components/EvaluatorLogin";
 import AfterEvaluatorLogin from "./components/AfterEvaluatorLogin";
 import OnScreenEvaluation from "./components/OnScreenEvaluation";
 
+
 const App = () => {
   return (
     <Router>
@@ -27,11 +27,12 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/studentlogin" element={<StudentLogin />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/evaluation/:id" element={<Evaluation />} />
+        <Route path="/evaluation/:sequentialId" element={<Evaluation />} />
         <Route path="/answer-sheet-table" element={<AnswerSheetTable />} />
         <Route path="/evaluatorlogin" element={<EvaluatorLogin />} />
         <Route path="/afterevaluatorlogin" element={<AfterEvaluatorLogin />} />
         <Route path="/on-screen-evaluation" element={<OnScreenEvaluation />} />
+        
       </Routes>
     </Router>
   );

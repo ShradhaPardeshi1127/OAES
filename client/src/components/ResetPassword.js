@@ -230,7 +230,7 @@
 //   export default ResetPassword;
 
 import React, { useState } from "react";
-import "../styles/AdminLogin.css";
+
 
 const ResetPassword = () => {
   const [email] = useState(
