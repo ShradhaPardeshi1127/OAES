@@ -203,29 +203,6 @@ const OnScreenEvaluation = () => {
             </>
           )}
 
-          {/* <button
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
-                        onClick={navigateToAnswerSheet}
-                        disabled={loading || error || totalCount === 0}
-                    >
-                        <span className="flex items-center justify-center">
-                            {loading ? (
-                                "Loading Papers..."
-                            ) : totalCount === 0 ? (
-                                "No Papers Available"
-                            ) : (
-                                <>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                    </svg>
-                                    Start Checking Papers
-                                </>
-                            )}
-                        </span>
-                        {!loading && totalCount > 0 && !error && (
-                            <span className="absolute right-0 h-full w-12 -ml-12 transition-all duration-300 transform rotate-12 translate-x-12 bg-white opacity-10 group-hover:translate-x-0"></span>
-                        )}
-                    </button> */}
           <button
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
             onClick={navigateToAnswerSheet}
