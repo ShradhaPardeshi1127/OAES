@@ -1,6 +1,4 @@
 
-
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -14,7 +12,7 @@ const Evaluator = require("./models/Evaluator.js");
 const AnswerSheet = require("./models/answersheet");
 
 
-const createUserModel = require('./models/User.js'); // Assuming User.js is in the same directory
+const createUserModel = require('./models/User.js'); 
 const User = createUserModel('login'); // Create User model instance
 
 const app = express();
@@ -96,7 +94,7 @@ app.post("/signup", async (req, res) => {
   let { email, password, rollNumber, name, role } = req.body;
 
   // Assign default role as "student" if not provided
-  role = role || "student"; // Default role if not provided
+  role = role || "student"; 
 
   // Validate required fields
   if (!email || !password) {
@@ -121,8 +119,7 @@ app.post("/signup", async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ error: "User already exists" });
     }
-
-    // Hash the password before saving
+    
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Prepare user object
@@ -226,13 +223,11 @@ app.post("/assign-pdf-to-evaluator", async (req, res) => {
     for (const pdfData of pdfs) {
       const { subject, division, pdfUrl } = pdfData;
 
-      // Validate each PDF's data
       if (!subject || !division || !pdfUrl) {
         console.warn("Skipping PDF due to missing fields:", pdfData);
         continue; // Skip to the next PDF object if data is missing
       }
 
-      // Add the PDF data to the evaluator's assignedPdfs array
       evaluator.assignedPdfs.push({ subject, division, pdfUrl });
     }
 
@@ -262,7 +257,6 @@ app.post("/get-pdfs", async (req, res) => {
       allEvaluators.map((e) => e.name)
     );
 
-    // Try finding the evaluator with an exact match
     const evaluator = await Evaluator.findOne({
       name: trimmedName, // Exact match
       role: "evaluator",
@@ -276,7 +270,6 @@ app.post("/get-pdfs", async (req, res) => {
         .json({ message: `Evaluator '${trimmedName}' not found in database!` });
     }
 
-    // Filter PDFs assigned to the evaluator
     const filteredPdfs = evaluator.assignedPdfs.filter(
       (pdf) => pdf.subject === subject && pdf.division === division
     );
@@ -357,126 +350,23 @@ app.get('/answer-sheets', async (req, res) => {
     // Format the answer sheet data to include the fields needed by the frontend
     const formattedAnswerSheets = answerSheets.map(answerSheet => {
       return {
-        _id: answerSheet._id,           // Unique ID of the AnswerSheet document (essential)
+        _id: answerSheet._id,           
         pdfId: answerSheet.pdfId,
-        rollNumber: answerSheet.rollNumber, // Student Roll Number
+        rollNumber: answerSheet.rollNumber, 
         marks: answerSheet.marks,         // Marks object (e.g., { "1a": 8, "1b": 7, ... })
         checked: answerSheet.checked,     // Boolean: true if checked, false if pending
-        // pdfUrl: answerSheet.pdfUrl,       // URL of the PDF document (if stored in AnswerSheet)
-        // evaluatorName: answerSheet.evaluatorName, // Name of the evaluator (if stored)
-        // pdfId: answerSheet.pdfId,         // Original PDF ID (if relevant)
-        // Add any other fields from your AnswerSheet model that you want to send to the frontend
       };
     });
 
-    // Send the formatted answer sheets as a JSON response with status 200 (OK)
     res.status(200).json(formattedAnswerSheets);
 
   } catch (error) {
     // Handle errors gracefully and send an error response
     console.error("Error fetching answer sheets:", error);
-    res.status(500).json({ error: "Failed to fetch answer sheets", details: error.message }); // Include error details for debugging
+    res.status(500).json({ error: "Failed to fetch answer sheets", details: error.message }); 
   }
 });
 
-
-// server.js
-
-// app.post("/update-pdf-checked-status", async (req, res) => {
-//   try {
-//     const { evaluatorName, pdfUrl } = req.body;
-
-//     if (!evaluatorName || !pdfUrl) {
-//       return res.status(400).json({ error: "Evaluator name and PDF URL are required" });
-//     }
-
-//     await connectToDB();
-
-//     const evaluator = await Evaluator.findOne({ name: evaluatorName });
-//     if (!evaluator) {
-//       return res.status(404).json({ error: "Evaluator not found" });
-//     }
-
-//     // Find the specific PDF in assignedPdfs array and update checked status
-//     const pdfToUpdate = evaluator.assignedPdfs.find(pdf => pdf.pdfUrl === pdfUrl);
-//     if (!pdfToUpdate) {
-//       return res.status(404).json({ error: "PDF not found for this evaluator" });
-//     }
-
-//     pdfToUpdate.checked = true; // Set checked to true
-
-//     await evaluator.save(); // Save the updated evaluator document
-
-//     res.status(200).json({ message: "PDF checked status updated successfully" });
-
-//   } catch (error) {
-//     console.error("Error updating PDF checked status:", error);
-//     res.status(500).json({ error: "Failed to update PDF checked status", details: error.message });
-//   }
-// });
-
-//new eoute to assing pdf while upload 27 march
-
-// app.post("/create-answer-sheets-on-assignment", async (req, res) => {
-//   try {
-//       const { evaluatorName, pdfs } = req.body; // Expect evaluatorName and pdfs array
-
-//       if (!evaluatorName || !pdfs || !Array.isArray(pdfs)) {
-//           return res.status(400).json({ error: "evaluatorName and an array of pdfs are required" });
-//       }
-
-//       await connectToDB(); // Ensure database connection
-
-//       const createdAnswerSheetIds = []; // To track IDs of created AnswerSheets
-
-//       // Iterate through the pdfs array
-//       for (const pdfData of pdfs) {
-//           const { subject, division, pdfUrl } = pdfData;
-
-//           if (!subject || !division || !pdfUrl) {
-//               console.warn("Skipping PDF due to missing fields:", pdfData);
-//               continue; // Skip if data is missing
-//           }
-
-//           // Create a new AnswerSheet document in MongoDB for each PDF
-//           const newAnswerSheet = new AnswerSheet({
-//               pdfId: pdfUrl, // Or generate a unique ID if pdfUrl is not suitable as pdfId
-//               rollNumber: null,
-//               marks: {},
-//               checked: false,
-//               // You can add subject, division, evaluatorName, etc., to AnswerSheet if needed
-//           });
-
-//           const savedAnswerSheet = await newAnswerSheet.save();
-//           createdAnswerSheetIds.push(savedAnswerSheet._id); // Track created AnswerSheet IDs
-//       }
-
-//       // After creating AnswerSheets, THEN assign PDFs to evaluator (your existing logic)
-//       const evaluator = await Evaluator.findOne({ name: evaluatorName });
-//       if (!evaluator) {
-//           return res.status(404).json({ error: "Evaluator not found" });
-//       }
-//       for (const pdfData of pdfs) {
-//           const { subject, division, pdfUrl } = pdfData;
-//           evaluator.assignedPdfs.push({ subject, division, pdfUrl });
-//       }
-//       await evaluator.save();
-
-
-//       res.status(201).json({
-//           success: true,
-//           message: "AnswerSheets created and PDFs assigned successfully!",
-//           createdAnswerSheetIds: createdAnswerSheetIds, // Optionally return created AnswerSheet IDs
-//           evaluator: evaluator, // Optionally return updated evaluator data
-//       });
-
-//   } catch (error) {
-//       console.error('Error creating AnswerSheets and assigning PDFs:', error);
-//       res.status(500).json({ success: false, message: 'Failed to create AnswerSheets and assign PDFs.', error: error.message });
-//   }
-// });
-
-//------------------------------------------------------------------------------------
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
